@@ -4,12 +4,12 @@ import {FaTrashAlt} from 'react-icons/fa'
    const [items,setItems] = useState([
         {
             id:1,
-            checked:false,
+            checked:true,
             item :'Select One Half of potetos'
         },
         {
             id:2,
-            checked:false,
+            checked:true,
             item:'select Totamato'
         },{
             id:3,
@@ -18,19 +18,37 @@ import {FaTrashAlt} from 'react-icons/fa'
         }
        ]
    )
+   const handleDelete = (id)=>{
+        const listItems = items.filter((item)=>item.id !== id)
+        setItems(listItems)
+        localStorage.setItems('shoppinglist',JSON.stringify(listItems))
+
+    }
+   const handleCheck = (id)=>{
+      const listItems = items.map((item)=>item.id === id?{
+          ...item,checked:!item.checked}:item)
+          setItems(listItems)
+          localStorage.setItems('shoppinglist',JSON.stringify(listItems))
+   }
 //    npm i react-icon
   return (
     <main>
-        <ul>
+        {(items.length)?(
+            <ul>
             {
                 items.map((item)=>(
                     <li className='item' key={item.id}>
                         <input 
                             type="checkbox"
+                            onChange={()=>handleCheck(item.id)}
                             checked={item.checked}
                         />
-                        <label>{item.item}</label>
+                        <label
+                         style={(item.checked)?{textDecoration:'line-through'}:null}
+                        onDoubleClick={()=> handleCheck(item.id)}
+                        >{item.item}</label>
                        <FaTrashAlt 
+                            onClick={()=>handleDelete(item.id)}
                             role="button" 
                             tabIndex="0"
                         />
@@ -38,6 +56,11 @@ import {FaTrashAlt} from 'react-icons/fa'
                 ))
             }
         </ul>
+        ):(
+            <label style={{marginTop:'2rem'}}>No Items Left to Buy for now</label>
+        )
+    }
+        
     </main>
   )
 }
