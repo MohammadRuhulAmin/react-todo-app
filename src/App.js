@@ -4,6 +4,7 @@ import Header from './Header';
 import Content from './Content';
 import Footer from './Footer';
 import {useState} from 'react';
+import AddItem from './AddItem';
 function App() {
   const [items,setItems] = useState([
     {
@@ -44,6 +45,7 @@ const listItems = items.map((item)=>item.id === id?{
   return (
     <div className="App">
       <Header title = "Grocery Item List"/>
+      <AddItem/>
       <Content
         items = {items}
         setItems = {setItems}
